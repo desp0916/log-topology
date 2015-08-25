@@ -1,16 +1,19 @@
 package storm.cookbook.log;
 
+import org.apache.cassandra.thrift.AuthorizationException;
+
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.contrib.cassandra.bolt.AckStrategy;
-import backtype.storm.contrib.cassandra.bolt.CassandraBatchingBolt;
+//import backtype.storm.contrib.cassandra.bolt.CassandraBatchingBolt;
 import backtype.storm.contrib.cassandra.bolt.CassandraBolt;
 import backtype.storm.contrib.cassandra.bolt.CassandraCounterBatchingBolt;
 import backtype.storm.generated.AlreadyAliveException;
+//import backtype.storm.generated.AuthorizationException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
-import backtype.storm.tuple.Fields;
+//import backtype.storm.tuple.Fields;
 import backtype.storm.utils.Utils;
 
 public class LogTopology {
@@ -74,7 +77,7 @@ public class LogTopology {
 	}
 
 	public void runCluster(String name, String redisHost, String cassandraHost)
-			throws AlreadyAliveException, InvalidTopologyException {
+			throws AlreadyAliveException, InvalidTopologyException, AuthorizationException {
 		conf.setNumWorkers(20);
 		conf.put(Conf.REDIS_HOST_KEY, redisHost);
 		conf.put(CassandraBolt.CASSANDRA_HOST,cassandraHost);

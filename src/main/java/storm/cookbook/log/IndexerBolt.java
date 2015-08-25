@@ -9,7 +9,6 @@ import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 
 import storm.cookbook.log.model.LogEntry;
-
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
@@ -23,11 +22,10 @@ public class IndexerBolt extends BaseRichBolt {
 	private Client client;
 	public static Logger LOG = Logger.getLogger(LogRulesBolt.class);
 	private OutputCollector collector;
-	
+
 	public static final String INDEX_NAME = "logstorm";
 	public static final String INDEX_TYPE = "logentry";
-	
-	@Override
+
 	public void prepare(Map stormConf, TopologyContext context,
 			OutputCollector collector) {
 		this.collector = collector;
@@ -43,7 +41,6 @@ public class IndexerBolt extends BaseRichBolt {
 		client = node.client();
 	}
 
-	@Override
 	public void execute(Tuple input) {
 		LogEntry entry = (LogEntry)input.getValueByField(FieldNames.LOG_ENTRY);
 		if(entry == null){
@@ -59,14 +56,13 @@ public class IndexerBolt extends BaseRichBolt {
 		else{
 			if(response.getId() == null)
 				LOG.error("Failed to index Tuple: " + input.toString());
-			else{ 
+			else{
 				LOG.debug("Indexing success on Tuple: " + input.toString());
 				collector.emit(new Values(entry,response.getId()));
 			}
 		}
 	}
 
-	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields(FieldNames.LOG_ENTRY, FieldNames.LOG_INDEX_ID));
 	}

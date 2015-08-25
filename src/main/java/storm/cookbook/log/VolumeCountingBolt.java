@@ -30,7 +30,6 @@ public class VolumeCountingBolt extends BaseRichBolt {
 	public static final String FIELD_COLUMN = "Column";
 	public static final String FIELD_INCREMENT = "IncrementAmount";
 
-	@Override
 	public void prepare(Map stormConf, TopologyContext context,
 			OutputCollector collector) {
 		this.collector = collector;
@@ -44,13 +43,11 @@ public class VolumeCountingBolt extends BaseRichBolt {
 		return c.getTimeInMillis();
 	}
 
-	@Override
 	public void execute(Tuple input) {
 		LogEntry entry = (LogEntry) input.getValueByField(FieldNames.LOG_ENTRY);
 		collector.emit(new Values(getMinuteForTime(entry.getTimestamp()), entry.getSource(),1L));
 	}
 
-	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields(FIELD_ROW_KEY, FIELD_COLUMN, FIELD_INCREMENT));
 	}

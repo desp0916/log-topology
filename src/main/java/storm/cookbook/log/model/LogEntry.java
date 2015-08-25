@@ -14,35 +14,27 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class LogEntry {
-	
+
 	public static Logger LOG = Logger.getLogger(LogEntry.class);
-	
 	private String source;
-	
 	private String type;
-	
 	private List<String> tags = new ArrayList<String>();
-	
 	private Map<String,String> fields = new HashMap<String, String>();
-	
 	private Date timestamp;
-	
 	private String sourceHost;
-	
 	private String sourcePath;
-	
 	private String message = "";
-	
 	private boolean filter = false;
-	
+
 	private NotificationDetails notifyAbout = null;
-	
-	private static String[] FORMATS = new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSS",
+
+	private static String[] FORMATS = new String[]{
+		"yyyy-MM-dd'T'HH:mm:ss.SSS",
 		"yyyy.MM.dd G 'at' HH:mm:ss z",
 		"yyyyy.MMMMM.dd GGG hh:mm aaa",
 		"EEE, d MMM yyyy HH:mm:ss Z",
 		"yyMMddHHmmssZ"};
-	
+
 	@SuppressWarnings("unchecked")
 	public LogEntry(JSONObject json){
 		source = (String)json.get("@source");
@@ -56,7 +48,7 @@ public class LogEntry {
 		JSONObject fields = (JSONObject)json.get("@fields");
 		fields.putAll(fields);
 	}
-	
+
 	public Date parseDate(String value){
 		for(int i = 0; i < FORMATS.length; i++){
 			SimpleDateFormat format = new SimpleDateFormat(FORMATS[i]);
@@ -70,7 +62,7 @@ public class LogEntry {
 		LOG.error("Could not parse timestamp for log");
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
 		JSONObject json = new JSONObject();
@@ -88,7 +80,7 @@ public class LogEntry {
 		json.put("@fields",fieldTemp);
 		return json;
 	}
-	
+
 
 	public boolean isFilter() {
 		return filter;
@@ -117,11 +109,11 @@ public class LogEntry {
 	public Map<String, String> getFields() {
 		return fields;
 	}
-	
+
 	public void addField(String name, String value){
 		fields.put(name, value);
 	}
-	
+
 	public void addTag(String tag){
 		tags.add(tag);
 	}
