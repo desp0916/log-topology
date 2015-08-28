@@ -2,16 +2,11 @@ package storm.cookbook.log;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 
 import storm.cookbook.log.model.LogEntry;
-
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
@@ -25,7 +20,7 @@ public class VolumeCountingBolt extends BaseRichBolt {
 	private static final long serialVersionUID = 1L;
 	public static Logger LOG = Logger.getLogger(VolumeCountingBolt.class);
 	private OutputCollector collector;
-	
+
 	public static final String FIELD_ROW_KEY = "RowKey";
 	public static final String FIELD_COLUMN = "Column";
 	public static final String FIELD_INCREMENT = "IncrementAmount";
