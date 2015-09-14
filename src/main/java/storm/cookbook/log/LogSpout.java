@@ -18,7 +18,8 @@ import backtype.storm.tuple.Values;
 
 public class LogSpout extends BaseRichSpout {
 
-    public static Logger LOG = Logger.getLogger(LogSpout.class);
+	private static final long serialVersionUID = 121212144L;
+	public static Logger LOG = Logger.getLogger(LogSpout.class);
     public static final String LOG_CHANNEL = "rawLogs";
     private Jedis jedis;
     private String host;

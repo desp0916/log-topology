@@ -34,13 +34,11 @@ public class LogRulesBolt extends BaseRichBolt {
 		this.collector = collector;
 		//TODO: load the rule definitions from an external agent instead of the classpath.
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
-		              getClass() ), ResourceType.DRL );
-//		Resource s = ResourceFactory.newClassPathResource( "/Syslog.drl",
-//	              getClass() );
-//		LOG.info("garyyyyy"+ s.toString());
-//		printClassPath();
-//		kbuilder.add( s, ResourceType.DRL );
+//		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
+//		              getClass() ), ResourceType.DRL );
+		kbuilder.add( ResourceFactory.newClassPathResource("rules/Syslog.drl"),
+				ResourceType.DRL);
+
 		if ( kbuilder.hasErrors() ) {
 		    LOG.error( kbuilder.getErrors().toString() );
 		}
