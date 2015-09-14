@@ -2,8 +2,10 @@
 
 ### 一、來源：
 
-  * "[Storm Real-time Processing Cookbook](https://www.packtpub.com/big-data-and-business-intelligence/storm-real-time-processing-cookbook)"
+  * [6. Packaging Storm Topologies](http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.0/bk_storm-user-guide/content/packaging-storm-topologies.html)
+  * [Storm Real-time Processing Cookbook](https://www.packtpub.com/big-data-and-business-intelligence/storm-real-time-processing-cookbook)
   * Bitbucket: https://bitbucket.org/qanderson/log-topology
+  * [Eclipse Maven Drools 5.5.0.Final Example](http://hocinegrine.com/2013/08/21/eclipse-maven-drools-5-5-0-final-example/)
 
 ### 二、執行方式：
 

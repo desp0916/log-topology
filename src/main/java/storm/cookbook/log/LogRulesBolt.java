@@ -1,5 +1,7 @@
 package storm.cookbook.log;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -8,6 +10,7 @@ import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatelessKnowledgeSession;
 
@@ -32,8 +35,13 @@ public class LogRulesBolt extends BaseRichBolt {
 		this.collector = collector;
 		//TODO: load the rule definitions from an external agent instead of the classpath.
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
-		              getClass() ), ResourceType.DRL );
+//		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
+//		              getClass() ), ResourceType.DRL );
+		Resource s = ResourceFactory.newClassPathResource( "Syslog.drl",
+	              getClass() );
+		LOG.info("garyyyyy"+ s.toString());
+		printClassPath();
+		kbuilder.add( s, ResourceType.DRL );
 		if ( kbuilder.hasErrors() ) {
 		    LOG.error( kbuilder.getErrors().toString() );
 		}
@@ -59,4 +67,11 @@ public class LogRulesBolt extends BaseRichBolt {
 		declarer.declare(new Fields(FieldNames.LOG_ENTRY));
 	}
 
+	public static void printClassPath() {
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+        for(URL url: urls){
+        	LOG.info(url.getFile());
+        }
+	}
 }

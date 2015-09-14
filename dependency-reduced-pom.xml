@@ -26,6 +26,9 @@
             <configuration>
               <transformers>
                 <transformer />
+                <transformer>
+                  <mainClass />
+                </transformer>
               </transformers>
               <configuration>
                 <archive>
