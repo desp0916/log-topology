@@ -10,7 +10,6 @@ import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
-import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatelessKnowledgeSession;
 
@@ -35,13 +34,13 @@ public class LogRulesBolt extends BaseRichBolt {
 		this.collector = collector;
 		//TODO: load the rule definitions from an external agent instead of the classpath.
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-//		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
-//		              getClass() ), ResourceType.DRL );
-		Resource s = ResourceFactory.newClassPathResource( "Syslog.drl",
-	              getClass() );
-		LOG.info("garyyyyy"+ s.toString());
-		printClassPath();
-		kbuilder.add( s, ResourceType.DRL );
+		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
+		              getClass() ), ResourceType.DRL );
+//		Resource s = ResourceFactory.newClassPathResource( "/Syslog.drl",
+//	              getClass() );
+//		LOG.info("garyyyyy"+ s.toString());
+//		printClassPath();
+//		kbuilder.add( s, ResourceType.DRL );
 		if ( kbuilder.hasErrors() ) {
 		    LOG.error( kbuilder.getErrors().toString() );
 		}
