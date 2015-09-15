@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -16,7 +18,7 @@ public class LogEntry {
 	private String source;
 	private String type;
 //	private List<String> tags = new ArrayList<String>();
-//	private Map<String,String> fields = new HashMap<String, String>();
+	private Map<String,String> fields = new HashMap<String, String>();
 	private Date timestamp;
 //	private String sourceHost;
 //	private String sourcePath;
@@ -109,9 +111,9 @@ public class LogEntry {
 //		return fields;
 //	}
 //
-//	public void addField(String name, String value){
-//		fields.put(name, value);
-//	}
+	public void addField(String name, String value){
+		fields.put(name, value);
+	}
 
 //	public void addTag(String tag){
 //		tags.add(tag);
