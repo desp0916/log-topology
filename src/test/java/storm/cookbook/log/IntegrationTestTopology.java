@@ -1,7 +1,7 @@
 package storm.cookbook.log;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -11,8 +11,6 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +45,7 @@ public class IntegrationTestTopology {
 	private static Jedis jedis;
 	private static LogTopology topology = new LogTopology();
 	private static TestBolt testBolt = new TestBolt(REDIS_CHANNEL);
-	private static EmbeddedCassandra cassandra;
+	private static EmbeddedCassandraOld cassandra;
 	private static Client client;
 
 	@BeforeClass
@@ -58,7 +56,7 @@ public class IntegrationTestTopology {
 	}
 
 	private static void setupCassandra() throws Exception {
-		cassandra = new EmbeddedCassandra(9171);
+		cassandra = new EmbeddedCassandraOld(9171);
 		cassandra.start();
 		Thread.sleep(3000);
 
@@ -137,7 +135,7 @@ public class IntegrationTestTopology {
 		GetResponse response = client
 				.prepareGet(IndexerBolt.INDEX_NAME, IndexerBolt.INDEX_TYPE, id)
 				.execute().actionGet();
-		assertTrue(response.exists());
+		assertTrue(response.isExists());
 		// now check that count has been updated in cassandra
 		AstyanaxContext<Keyspace> astyContext = new AstyanaxContext.Builder()
 				.forCluster("ClusterName")

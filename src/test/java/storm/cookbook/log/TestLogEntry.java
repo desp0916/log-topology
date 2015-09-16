@@ -20,7 +20,7 @@ public class TestLogEntry extends StormTestCase{
 	public void testFromJSON() throws IOException, Exception {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 		Date test = format.parse("2013-01-04T11:09:16.171");
-		String testData = UnitTestUtils.readFile("/testData1.json");
+		String testData = UnitTestUtils.readFile("/resources/testData1.json");
 		JSONObject obj=(JSONObject) JSONValue.parse(testData);
 		LogEntry entry = new LogEntry(obj);
 		assertEquals("file://logServer/var/log/auth.log", entry.getSource());
@@ -32,10 +32,10 @@ public class TestLogEntry extends StormTestCase{
 		assertNotNull(entry.getMessage());
 		assertEquals("syslog", entry.getType());
 	}
-	
+
 	@Test
 	public void testToJSON() throws IOException{
-		String testData = UnitTestUtils.readFile("/testData1.json");
+		String testData = UnitTestUtils.readFile("/resources/testData1.json");
 		JSONObject obj=(JSONObject) JSONValue.parse(testData);
 		LogEntry entry = new LogEntry(obj);
 		JSONObject test = entry.toJSON();
@@ -47,7 +47,7 @@ public class TestLogEntry extends StormTestCase{
 		assertEquals(obj.get("@source"), test.get("@source"));
 		assertEquals(DateFormat.getDateInstance().format(entry.getTimestamp()), test.get("@timestamp"));
 	}
-	
+
 	@Test
 	public void testEquals() throws IOException{
 		LogEntry lhs = getEntry();

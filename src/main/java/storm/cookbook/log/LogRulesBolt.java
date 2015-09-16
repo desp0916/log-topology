@@ -36,7 +36,7 @@ public class LogRulesBolt extends BaseRichBolt {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 //		kbuilder.add( ResourceFactory.newClassPathResource( "/Syslog.drl",
 //		              getClass() ), ResourceType.DRL );
-		kbuilder.add( ResourceFactory.newClassPathResource("rules/Syslog.drl"),
+		kbuilder.add( ResourceFactory.newClassPathResource("resources/Syslog.drl"),
 				ResourceType.DRL);
 
 		if ( kbuilder.hasErrors() ) {

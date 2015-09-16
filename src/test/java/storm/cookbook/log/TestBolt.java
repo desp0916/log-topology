@@ -16,26 +16,25 @@ public final class TestBolt extends BaseRichBolt {
 	private static final long serialVersionUID = 1L;
 
 	private static final transient Logger LOG = Logger.getLogger(TestBolt.class);
-	
+
 	private static Jedis jedis;
-	
+
 	private String channel;
-	
+
 	public TestBolt(String channel){
 		this.channel = channel;
 	}
-	
+
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
     	jedis = new Jedis("localhost", Integer.parseInt(Conf.DEFAULT_JEDIS_PORT));
     	jedis.connect();
     }
-    
+
     public void declareOutputFields(OutputFieldsDeclarer declarer) {}
 
-	@Override
 	public void execute(Tuple input) {
 		jedis.rpush(channel, input.getString(1));
-		
+
 	}
-    
+
 }

@@ -47,9 +47,13 @@ public class LogSpout extends BaseRichSpout {
         if(content==null || "nil".equals(content)) {
             try { Thread.sleep(300); } catch (InterruptedException e) {}
         } else {
-            JSONObject obj=(JSONObject) JSONValue.parse(content);
-            LogEntry entry = new LogEntry(obj);
-            collector.emit(new Values(entry));
+        	try {
+	            JSONObject obj=(JSONObject) JSONValue.parse(content);
+	            LogEntry entry = new LogEntry(obj);
+	            collector.emit(new Values(entry));
+        	} catch (NullPointerException e) {
+        		LOG.error(e);
+        	}
         }
     }
 }

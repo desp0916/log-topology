@@ -10,7 +10,7 @@ import org.json.simple.JSONValue;
 import storm.cookbook.log.model.LogEntry;
 
 public class UnitTestUtils {
-	
+
 	public static String readFile(String file) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				IntegrationTestTopology.class.getResourceAsStream(file)));
@@ -25,9 +25,9 @@ public class UnitTestUtils {
 
 		return stringBuilder.toString();
 	}
-	
+
 	public static LogEntry getEntry() throws IOException{
-		String testData = UnitTestUtils.readFile("/testData1.json");
+		String testData = UnitTestUtils.readFile("/resources/testData1.json");
 		JSONObject obj=(JSONObject) JSONValue.parse(testData);
 		return new LogEntry(obj);
 	}

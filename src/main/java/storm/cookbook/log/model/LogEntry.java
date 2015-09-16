@@ -3,8 +3,10 @@ package storm.cookbook.log.model;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -17,11 +19,11 @@ public class LogEntry {
 	private String host;
 	private String source;
 	private String type;
-//	private List<String> tags = new ArrayList<String>();
+	private List<String> tags = new ArrayList<String>();
 	private Map<String,String> fields = new HashMap<String, String>();
 	private Date timestamp;
-//	private String sourceHost;
-//	private String sourcePath;
+	private String sourceHost;
+	private String sourcePath;
 	private String message = "";
 	private boolean filter = false;
 
@@ -36,17 +38,16 @@ public class LogEntry {
 
 	@SuppressWarnings("unchecked")
 	public LogEntry(JSONObject json){
-//		source = (String)json.get("@source");
-		source = "redis";
+		source = (String)json.get("@source");
 		timestamp = parseDate((String)json.get("@timestamp"));
-//		sourceHost = (String)json.get("@source_host");
-//		sourcePath = (String)json.get("@source_path");
+		sourceHost = (String)json.get("@source_host");
+		sourcePath = (String)json.get("@source_path");
 		message = (String)json.get("@message");
 		type = (String)json.get("@type");
-//		JSONArray array = (JSONArray)json.get("@tags");
-//		tags.addAll(array);
-//		JSONObject fields = (JSONObject)json.get("@fields");
-//		fields.putAll(fields);
+		JSONArray array = (JSONArray)json.get("@tags");
+		tags.addAll(array);
+		JSONObject fields = (JSONObject)json.get("@fields");
+		fields.putAll(fields);
 	}
 
 	public Date parseDate(String value){
@@ -66,19 +67,18 @@ public class LogEntry {
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
 		JSONObject json = new JSONObject();
-//		json.put("@source", source);
-		json.put("@source", "redis");
+		json.put("@source", source);
 		json.put("@timestamp",DateFormat.getDateInstance().format(timestamp));
-//		json.put("@source_host",sourceHost);
-//		json.put("@source_path",sourcePath);
+		json.put("@source_host",sourceHost);
+		json.put("@source_path",sourcePath);
 		json.put("@message",message);
 		json.put("@type",type);
 		JSONArray temp = new JSONArray();
-//		temp.addAll(tags);
+		temp.addAll(tags);
 		json.put("@tags", temp);
 		JSONObject fieldTemp = new JSONObject();
-//		fieldTemp.putAll(fields);
-//		json.put("@fields",fieldTemp);
+		fieldTemp.putAll(fields);
+		json.put("@fields",fieldTemp);
 		return json;
 	}
 
@@ -103,21 +103,21 @@ public class LogEntry {
 		return source;
 	}
 
-//	public List<String> getTags() {
-//		return tags;
-//	}
+	public List<String> getTags() {
+		return tags;
+	}
 
-//	public Map<String, String> getFields() {
-//		return fields;
-//	}
-//
+	public Map<String, String> getFields() {
+		return fields;
+	}
+
 	public void addField(String name, String value){
 		fields.put(name, value);
 	}
 
-//	public void addTag(String tag){
-//		tags.add(tag);
-//	}
+	public void addTag(String tag){
+		tags.add(tag);
+	}
 
 	public Date getTimestamp() {
 		return timestamp;
@@ -127,14 +127,14 @@ public class LogEntry {
 		this.timestamp = timestamp;
 	}
 
-//	public String getSourceHost() {
-//		return sourceHost;
-//	}
-//
-//	public String getSourcePath() {
-//		sourcePath.contains("");
-//		return sourcePath;
-//	}
+	public String getSourceHost() {
+		return sourceHost;
+	}
+
+	public String getSourcePath() {
+		sourcePath.contains("");
+		return sourcePath;
+	}
 
 	public String getMessage() {
 		return message;
@@ -144,13 +144,13 @@ public class LogEntry {
 		this.source = source;
 	}
 
-//	public void setSourceHost(String sourceHost) {
-//		this.sourceHost = sourceHost;
-//	}
-//
-//	public void setSourcePath(String sourcePath) {
-//		this.sourcePath = sourcePath;
-//	}
+	public void setSourceHost(String sourceHost) {
+		this.sourceHost = sourceHost;
+	}
+
+	public void setSourcePath(String sourcePath) {
+		this.sourcePath = sourcePath;
+	}
 
 	public String getType() {
 		return type;
@@ -164,15 +164,15 @@ public class LogEntry {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-//		result = prime * result + ((fields == null) ? 0 : fields.hashCode());
+		result = prime * result + ((fields == null) ? 0 : fields.hashCode());
 		result = prime * result + (filter ? 1231 : 1237);
 		result = prime * result + ((message == null) ? 0 : message.hashCode());
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
-//		result = prime * result
-//				+ ((sourceHost == null) ? 0 : sourceHost.hashCode());
-//		result = prime * result
-//				+ ((sourcePath == null) ? 0 : sourcePath.hashCode());
-//		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result
+				+ ((sourceHost == null) ? 0 : sourceHost.hashCode());
+		result = prime * result
+				+ ((sourcePath == null) ? 0 : sourcePath.hashCode());
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result
 				+ ((timestamp == null) ? 0 : timestamp.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -188,11 +188,11 @@ public class LogEntry {
 		if (getClass() != obj.getClass())
 			return false;
 		LogEntry other = (LogEntry) obj;
-//		if (fields == null) {
-//			if (other.fields != null)
-//				return false;
-//		} else if (!fields.equals(other.fields))
-//			return false;
+		if (fields == null) {
+			if (other.fields != null)
+				return false;
+		} else if (!fields.equals(other.fields))
+			return false;
 		if (filter != other.filter)
 			return false;
 		if (message == null) {
@@ -205,21 +205,21 @@ public class LogEntry {
 				return false;
 		} else if (!source.equals(other.source))
 			return false;
-//		if (sourceHost == null) {
-//			if (other.sourceHost != null)
-//				return false;
-//		} else if (!sourceHost.equals(other.sourceHost))
-//			return false;
-//		if (sourcePath == null) {
-//			if (other.sourcePath != null)
-//				return false;
-//		} else if (!sourcePath.equals(other.sourcePath))
-//			return false;
-//		if (tags == null) {
-//			if (other.tags != null)
-//				return false;
-//		} else if (!tags.equals(other.tags))
-//			return false;
+		if (sourceHost == null) {
+			if (other.sourceHost != null)
+				return false;
+		} else if (!sourceHost.equals(other.sourceHost))
+			return false;
+		if (sourcePath == null) {
+			if (other.sourcePath != null)
+				return false;
+		} else if (!sourcePath.equals(other.sourcePath))
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)
 				return false;

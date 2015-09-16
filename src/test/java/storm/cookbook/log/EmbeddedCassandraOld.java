@@ -18,35 +18,35 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
-public class EmbeddedCassandra {
-    private static final Logger LOG = LoggerFactory.getLogger(EmbeddedCassandra.class);
-    
+public class EmbeddedCassandraOld {
+    private static final Logger LOG = LoggerFactory.getLogger(EmbeddedCassandraOld.class);
+
     public static final int     DEFAULT_PORT = 9160;
     public static final int     DEFAULT_STORAGE_PORT = 7000;
-    
+
     private final ExecutorService service = Executors.newSingleThreadExecutor(
             new ThreadFactoryBuilder()
                 .setDaemon(true)
                 .setNameFormat("EmbeddedCassandra-%d")
                 .build());
-        
+
     private final CassandraDaemon cassandra;
-    
-    public EmbeddedCassandra() throws IOException {
+
+    public EmbeddedCassandraOld() throws IOException {
         this(createTempDir(), "TestCluster", DEFAULT_PORT, DEFAULT_STORAGE_PORT);
     }
-    
-    public EmbeddedCassandra(int port) throws IOException{
+
+    public EmbeddedCassandraOld(int port) throws IOException{
         this(createTempDir(), "TestCluster", port, DEFAULT_STORAGE_PORT);
     }
-    
+
     private static File createTempDir() {
         File tempDir = Files.createTempDir();
         tempDir.deleteOnExit();
         return tempDir;
     }
-    
-    public EmbeddedCassandra(File dataDir, String clusterName, int port, int storagePort) throws IOException {
+
+    public EmbeddedCassandraOld(File dataDir, String clusterName, int port, int storagePort) throws IOException {
         LOG.info("Starting cassandra in dir " + dataDir);
         dataDir.mkdirs();
 
@@ -61,7 +61,7 @@ public class EmbeddedCassandra {
 
         File        configFile = new File(dataDir, "cassandra.yaml");
         Files.write(newFile, configFile, Charset.defaultCharset());
-        
+
         LOG.info("Cassandra config file: " + configFile.getPath());
         System.setProperty("cassandra.config", "file://" + configFile.getPath());
 
@@ -77,8 +77,8 @@ public class EmbeddedCassandra {
     }
 
     public void start() throws IOException, TTransportException {
-        service.submit(new Callable<Object>(){ 
-                @Override
+        service.submit(new Callable<Object>(){
+//                @Override
                 public Object call() throws Exception
                 {
                     try {

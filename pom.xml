@@ -146,7 +146,7 @@
 	<resources>
 		<resource>
 			<directory>src/main/resources</directory>
-			<targetPath>rules</targetPath>
+			<targetPath>resources</targetPath>
 			<includes>
 				<include>*</include>
 			</includes>
