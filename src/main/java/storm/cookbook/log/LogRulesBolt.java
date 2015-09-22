@@ -22,9 +22,12 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
+import com.esotericsoftware.minlog.Log;
+
 public class LogRulesBolt extends BaseRichBolt {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -21345433367834L;
+
 	public static Logger LOG = Logger.getLogger(LogRulesBolt.class);
 	private StatelessKnowledgeSession ksession;
 	private OutputCollector collector;
@@ -40,8 +43,10 @@ public class LogRulesBolt extends BaseRichBolt {
 				ResourceType.DRL);
 
 		if ( kbuilder.hasErrors() ) {
+			Log.error("GARYHERE");
 		    LOG.error( kbuilder.getErrors().toString() );
 		}
+		Log.error("GARYTHERE");
 		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
 		kbase.addKnowledgePackages( kbuilder.getKnowledgePackages() );
 		ksession = kbase.newStatelessKnowledgeSession();
@@ -51,7 +56,8 @@ public class LogRulesBolt extends BaseRichBolt {
 		LogEntry entry = (LogEntry)input.getValueByField(FieldNames.LOG_ENTRY);
 		if(entry == null){
 			LOG.fatal( "Received null or incorrect value from tuple" );
-			return;
+//			return;
+			collector.fail(input);
 		}
 		ksession.execute( entry );
 		if(!entry.isFilter()){

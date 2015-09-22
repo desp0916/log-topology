@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class LogEntry {
 
@@ -44,9 +45,15 @@ public class LogEntry {
 		sourcePath = (String)json.get("@source_path");
 		message = (String)json.get("@message");
 		type = (String)json.get("@type");
-		JSONArray array = (JSONArray)json.get("@tags");
+//		JSONArray array = (JSONArray)json.get("@tags");
+		String t = "[]";
+		Object obj = JSONValue.parse(t);
+		JSONArray array = (JSONArray)obj;
 		tags.addAll(array);
-		JSONObject fields = (JSONObject)json.get("@fields");
+//		JSONObject fields = (JSONObject)json.get("@fields");
+		String o = "{}";
+		Object obj_o = JSONValue.parse(o);
+		JSONObject fields = (JSONObject)obj_o;
 		fields.putAll(fields);
 	}
 

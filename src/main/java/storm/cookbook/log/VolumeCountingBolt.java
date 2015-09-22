@@ -17,7 +17,8 @@ import backtype.storm.tuple.Values;
 
 public class VolumeCountingBolt extends BaseRichBolt {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -21345476599934L;
+
 	public static Logger LOG = Logger.getLogger(VolumeCountingBolt.class);
 	private OutputCollector collector;
 

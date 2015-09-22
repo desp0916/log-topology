@@ -19,6 +19,7 @@ import backtype.storm.tuple.Values;
 
 public class IndexerBolt extends BaseRichBolt {
 
+	private static final long serialVersionUID = -21345476567834L;
 	private Client client;
 	public static Logger LOG = Logger.getLogger(LogRulesBolt.class);
 	private OutputCollector collector;

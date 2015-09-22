@@ -58,7 +58,7 @@ public class LogTopology {
 	}
 
 	public void runLocal(int runTime) {
-		conf.setDebug(true);
+//		conf.setDebug(true);
 		conf.put(Conf.REDIS_HOST_KEY, "localhost");
 		conf.put(CassandraBolt.CASSANDRA_HOST, "localhost:9200");
 		cluster = new LocalCluster();
@@ -78,10 +78,10 @@ public class LogTopology {
 
 	public void runCluster(String name, String redisHost, String cassandraHost)
 			throws AlreadyAliveException, InvalidTopologyException, AuthorizationException {
-//		conf.setDebug(true);
+		conf.setDebug(true);
 		conf.setNumWorkers(20);
 		conf.put(Conf.REDIS_HOST_KEY, redisHost);
-		conf.put(CassandraBolt.CASSANDRA_HOST,cassandraHost);
+		conf.put(CassandraBolt.CASSANDRA_HOST, cassandraHost);
 		StormSubmitter.submitTopology(name, conf, builder.createTopology());
 	}
 
