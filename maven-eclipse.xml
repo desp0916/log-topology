@@ -1,7 +1,7 @@
 <project default="copy-resources">
   <target name="init"/>
   <target name="copy-resources" depends="init">
-    <copy todir="target/classes/rules" filtering="false">
+    <copy todir="target/classes/resources" filtering="false">
       <fileset dir="src/main/resources" includes="*" excludes="**/*.java"/>
     </copy>
   </target>

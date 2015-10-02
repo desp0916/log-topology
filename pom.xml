@@ -16,6 +16,7 @@
 		<hadoop.version>2.4.0.2.1.1.0-385</hadoop.version>
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
+
 	<repositories>
 		<repository>
 			<id>hortonworks</id>
@@ -130,12 +131,12 @@
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-core</artifactId>
-			<version>5.5.0.Final</version>
+			<version>5.6.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
-			<version>5.5.0.Final</version>
+			<version>5.6.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.clojure</groupId>

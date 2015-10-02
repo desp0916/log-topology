@@ -5,10 +5,8 @@ import org.apache.cassandra.thrift.AuthorizationException;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
-import backtype.storm.contrib.cassandra.bolt.AckStrategy;
 //import backtype.storm.contrib.cassandra.bolt.CassandraBatchingBolt;
 import backtype.storm.contrib.cassandra.bolt.CassandraBolt;
-import backtype.storm.contrib.cassandra.bolt.CassandraCounterBatchingBolt;
 import backtype.storm.generated.AlreadyAliveException;
 //import backtype.storm.generated.AuthorizationException;
 import backtype.storm.generated.InvalidTopologyException;
@@ -30,11 +28,11 @@ public class LogTopology {
 		builder.setBolt("indexer", new IndexerBolt(), 10).shuffleGrouping(
 				"logRules");
 		builder.setBolt("counter", new VolumeCountingBolt(), 10).shuffleGrouping("logRules");
-		CassandraCounterBatchingBolt logPersistenceBolt = new CassandraCounterBatchingBolt(
-				Conf.COUNT_CF_NAME, VolumeCountingBolt.FIELD_ROW_KEY, VolumeCountingBolt.FIELD_INCREMENT );
-		logPersistenceBolt.setAckStrategy(AckStrategy.ACK_ON_RECEIVE);
-		builder.setBolt("countPersistor", logPersistenceBolt, 10)
-				.shuffleGrouping("counter");
+//		CassandraCounterBatchingBolt logPersistenceBolt = new CassandraCounterBatchingBolt(
+//				Conf.COUNT_CF_NAME, VolumeCountingBolt.FIELD_ROW_KEY, VolumeCountingBolt.FIELD_INCREMENT );
+//		logPersistenceBolt.setAckStrategy(AckStrategy.ACK_ON_RECEIVE);
+//		builder.setBolt("countPersistor", logPersistenceBolt, 10)
+//				.shuffleGrouping("counter");
 
 		// Maybe add:
 		// Stem and stop word counting per file
@@ -58,7 +56,7 @@ public class LogTopology {
 	}
 
 	public void runLocal(int runTime) {
-//		conf.setDebug(true);
+		conf.setDebug(true);
 		conf.put(Conf.REDIS_HOST_KEY, "localhost");
 		conf.put(CassandraBolt.CASSANDRA_HOST, "localhost:9200");
 		cluster = new LocalCluster();
@@ -78,7 +76,7 @@ public class LogTopology {
 
 	public void runCluster(String name, String redisHost, String cassandraHost)
 			throws AlreadyAliveException, InvalidTopologyException, AuthorizationException {
-		conf.setDebug(true);
+//		conf.setDebug(true);
 		conf.setNumWorkers(20);
 		conf.put(Conf.REDIS_HOST_KEY, redisHost);
 		conf.put(CassandraBolt.CASSANDRA_HOST, cassandraHost);

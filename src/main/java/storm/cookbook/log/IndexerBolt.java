@@ -35,9 +35,11 @@ public class IndexerBolt extends BaseRichBolt {
 			node = NodeBuilder.nodeBuilder().local(true).node();
 		} else {
 			String clusterName = (String) stormConf.get(Conf.ELASTIC_CLUSTER_NAME);
+			LOG.error("GARYYYYY: " + clusterName);
 			if(clusterName == null)
 				clusterName = Conf.DEFAULT_ELASTIC_CLUSTER;
-			node = NodeBuilder.nodeBuilder().clusterName(clusterName).node();
+//			node = NodeBuilder.nodeBuilder().clusterName(clusterName).node();
+			node = NodeBuilder.nodeBuilder().clusterName("elasticsearch").node();
 		}
 		client = node.client();
 	}
