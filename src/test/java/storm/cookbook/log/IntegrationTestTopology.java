@@ -155,7 +155,7 @@ public class IntegrationTestTopology {
 				.prepareQuery(
 						new ColumnFamily<String, String>(Conf.COUNT_CF_NAME,
 								StringSerializer.get(), StringSerializer.get()))
-				.getKey(Long.toString(minute)).getColumn(entry.getSource())
+				.getKey(Long.toString(minute)).getColumn(entry.getPath())
 				.execute().getResult();
 		assertEquals(1L, result.getLongValue());
 

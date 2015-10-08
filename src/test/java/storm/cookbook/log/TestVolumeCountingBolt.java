@@ -20,14 +20,15 @@ public class TestVolumeCountingBolt extends StormTestCase {
 
         VolumeCountingBolt bolt = new VolumeCountingBolt();
         bolt.prepare(null, null, collector);
-        
-        final long expectedMilliseonds = bolt.getMinuteForTime(entry.getTimestamp());
-        
+
+//        final long expectedMilliseonds = bolt.getMinuteForTime(entry.getTimestamp());
+        final long expectedMilliseonds = VolumeCountingBolt.getMinuteForTime(entry.getTimestamp());
+
         context.checking(new Expectations(){{
         	oneOf(tuple).getValueByField(FieldNames.LOG_ENTRY);will(returnValue(entry));
-        	oneOf(collector).emit(new Values(expectedMilliseonds, entry.getSource(), 1L));
+        	oneOf(collector).emit(new Values(expectedMilliseonds, entry.getPath(), 1L));
         }});
-        
+
         bolt.execute(tuple);
         context.assertIsSatisfied();
 	}

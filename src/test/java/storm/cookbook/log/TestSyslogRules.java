@@ -24,8 +24,10 @@ public class TestSyslogRules extends StormTestCase {
 	@Before
 	public void setupDrools(){
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add( ResourceFactory.newClassPathResource( "/resources/Syslog.drl",
-		              getClass() ), ResourceType.DRL );
+//		kbuilder.add( ResourceFactory.newClassPathResource( "/resources/Syslog.drl",
+//		              getClass() ), ResourceType.DRL );
+		kbuilder.add( ResourceFactory.newClassPathResource("resources/Syslog.drl"),
+				ResourceType.DRL);
 		if ( kbuilder.hasErrors() ) {
 		    fail(kbuilder.getErrors().toString());
 		}
@@ -38,16 +40,16 @@ public class TestSyslogRules extends StormTestCase {
 	@Test
 	public void testHostCorrection() throws IOException {
 		LogEntry entry = getEntry();
-		entry.setSourceHost("localhost");
+		entry.setHost("localhost");
 		ksession.execute( entry );
-		assertEquals("localhost.example.com",entry.getSourceHost());
+		assertEquals("localhost.example.com",entry.getHost());
 	}
 
 	@Test
 	public void testNonHostCorrection() throws IOException {
 		LogEntry entry = getEntry();
 		ksession.execute( entry );
-		assertEquals("logServer",entry.getSourceHost());
+		assertEquals("hdp01.localdomain",entry.getHost());
 	}
 
 	@Test

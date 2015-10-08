@@ -60,6 +60,8 @@ public class LogSpout extends BaseRichSpout {
         } else {
             JSONObject obj=(JSONObject) JSONValue.parse(content);
             LogEntry entry = new LogEntry(obj);
+            LOG.error("GARYHERE");
+            LOG.error(entry.getMessage());
 //        	LOG.info("GARYZZZZ: nextTuple()" + entry.toString());
             collector.emit(new Values(entry));
 

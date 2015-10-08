@@ -1,5 +1,6 @@
 package storm.cookbook.log.model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,18 +15,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-public class LogEntry {
+public class LogEntry implements Serializable {
 
+	private static final long serialVersionUID = -7736449148132326957L;
 	public static Logger LOG = Logger.getLogger(LogEntry.class);
-	private String host;
-	private String source;
-	private String type;
+	private String message = "";
+	private String version = "1";
+	private Date timestamp;
+	private String host = "";
+	private String path = "";
+	private String type = "";
 	private List<String> tags = new ArrayList<String>();
 	private Map<String,String> fields = new HashMap<String, String>();
-	private Date timestamp;
-	private String sourceHost;
-	private String sourcePath;
-	private String message = "";
 	private boolean filter = false;
 
 	private NotificationDetails notifyAbout = null;
@@ -39,12 +40,12 @@ public class LogEntry {
 
 	@SuppressWarnings("unchecked")
 	public LogEntry(JSONObject json){
-		source = (String)json.get("@source");
+		message = (String)json.get("message");
+		version = (String)json.get("@version");
 		timestamp = parseDate((String)json.get("@timestamp"));
-		sourceHost = (String)json.get("@source_host");
-		sourcePath = (String)json.get("@source_path");
-		message = (String)json.get("@message");
-		type = (String)json.get("@type");
+		host = (String)json.get("host");
+		path = (String)json.get("path");
+		type = (String)json.get("type");
 //		JSONArray array = (JSONArray)json.get("@tags");
 		String t = "[]";
 		Object obj = JSONValue.parse(t);
@@ -74,12 +75,12 @@ public class LogEntry {
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
 		JSONObject json = new JSONObject();
-		json.put("@source", source);
-		json.put("@timestamp",DateFormat.getDateInstance().format(timestamp));
-		json.put("@source_host",sourceHost);
-		json.put("@source_path",sourcePath);
-		json.put("@message",message);
-		json.put("@type",type);
+		json.put("message", message);
+		json.put("@version", version);
+		json.put("@timestamp", DateFormat.getDateInstance().format(timestamp));
+		json.put("host", host);
+		json.put("path", path);
+		json.put("type", type);
 		JSONArray temp = new JSONArray();
 		temp.addAll(tags);
 		json.put("@tags", temp);
@@ -106,8 +107,8 @@ public class LogEntry {
 		this.notifyAbout = notifyAbout;
 	}
 
-	public String getSource() {
-		return source;
+	public String getVersion() {
+		return version;
 	}
 
 	public List<String> getTags() {
@@ -134,29 +135,29 @@ public class LogEntry {
 		this.timestamp = timestamp;
 	}
 
-	public String getSourceHost() {
-		return sourceHost;
+	public String getHost() {
+		return host;
 	}
 
-	public String getSourcePath() {
-		sourcePath.contains("");
-		return sourcePath;
+	public String getPath() {
+		path.contains("");
+		return path;
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public void setSource(String source) {
-		this.source = source;
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
-	public void setSourceHost(String sourceHost) {
-		this.sourceHost = sourceHost;
+	public void setHost(String host) {
+		this.host = host;
 	}
 
-	public void setSourcePath(String sourcePath) {
-		this.sourcePath = sourcePath;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public String getType() {
@@ -174,11 +175,11 @@ public class LogEntry {
 		result = prime * result + ((fields == null) ? 0 : fields.hashCode());
 		result = prime * result + (filter ? 1231 : 1237);
 		result = prime * result + ((message == null) ? 0 : message.hashCode());
-		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		result = prime * result
-				+ ((sourceHost == null) ? 0 : sourceHost.hashCode());
+				+ ((host == null) ? 0 : host.hashCode());
 		result = prime * result
-				+ ((sourcePath == null) ? 0 : sourcePath.hashCode());
+				+ ((path == null) ? 0 : path.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result
 				+ ((timestamp == null) ? 0 : timestamp.hashCode());
@@ -207,20 +208,20 @@ public class LogEntry {
 				return false;
 		} else if (!message.equals(other.message))
 			return false;
-		if (source == null) {
-			if (other.source != null)
+		if (version == null) {
+			if (other.version != null)
 				return false;
-		} else if (!source.equals(other.source))
+		} else if (!version.equals(other.version))
 			return false;
-		if (sourceHost == null) {
-			if (other.sourceHost != null)
+		if (host == null) {
+			if (other.host != null)
 				return false;
-		} else if (!sourceHost.equals(other.sourceHost))
+		} else if (!host.equals(other.host))
 			return false;
-		if (sourcePath == null) {
-			if (other.sourcePath != null)
+		if (path == null) {
+			if (other.path != null)
 				return false;
-		} else if (!sourcePath.equals(other.sourcePath))
+		} else if (!path.equals(other.path))
 			return false;
 		if (tags == null) {
 			if (other.tags != null)
@@ -239,4 +240,5 @@ public class LogEntry {
 			return false;
 		return true;
 	}
+
 }

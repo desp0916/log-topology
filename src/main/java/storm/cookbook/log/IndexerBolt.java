@@ -1,12 +1,18 @@
 package storm.cookbook.log;
 
+//import org.elasticsearch.node.NodeBuilder;
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
+
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 
 import storm.cookbook.log.model.LogEntry;
 import backtype.storm.task.OutputCollector;
@@ -19,7 +25,8 @@ import backtype.storm.tuple.Values;
 
 public class IndexerBolt extends BaseRichBolt {
 
-	private static final long serialVersionUID = -21345476567834L;
+	private static final long serialVersionUID = 7996013724003895484L;
+	//	private static final long serialVersionUID = 7996013724003895484L;
 	private Client client;
 	public static Logger LOG = Logger.getLogger(LogRulesBolt.class);
 	private OutputCollector collector;
@@ -30,18 +37,24 @@ public class IndexerBolt extends BaseRichBolt {
 	public void prepare(Map stormConf, TopologyContext context,
 			OutputCollector collector) {
 		this.collector = collector;
-		Node node;
+//		Node node;
 		if((Boolean)stormConf.get(backtype.storm.Config.TOPOLOGY_DEBUG) == true){
-			node = NodeBuilder.nodeBuilder().local(true).node();
+//			node = NodeBuilder.nodeBuilder().local(true).node();
+			Node node = nodeBuilder().local(true).node();
+			client = node.client();
 		} else {
 			String clusterName = (String) stormConf.get(Conf.ELASTIC_CLUSTER_NAME);
-			LOG.error("GARYYYYY: " + clusterName);
 			if(clusterName == null)
 				clusterName = Conf.DEFAULT_ELASTIC_CLUSTER;
+			Settings settings = ImmutableSettings.settingsBuilder()
+			        .put("cluster.name", clusterName).build();
+			client = new TransportClient(settings)
+					.addTransportAddress(new InetSocketTransportAddress(
+							Conf.ELASTIC_HOST, 9300));
 //			node = NodeBuilder.nodeBuilder().clusterName(clusterName).node();
-			node = NodeBuilder.nodeBuilder().clusterName("elasticsearch").node();
+//			client = node.client();
+			LOG.error("GARYABC: "+clusterName);
 		}
-		client = node.client();
 	}
 
 	public void execute(Tuple input) {
@@ -57,6 +70,7 @@ public class IndexerBolt extends BaseRichBolt {
 		if(response == null)
 			LOG.error("Failed to index Tuple: " + input.toString());
 		else{
+			LOG.error("GARYZZZ: "+input.toString());
 			if(response.getId() == null)
 				LOG.error("Failed to index Tuple: " + input.toString());
 			else{
@@ -70,4 +84,8 @@ public class IndexerBolt extends BaseRichBolt {
 		declarer.declare(new Fields(FieldNames.LOG_ENTRY, FieldNames.LOG_INDEX_ID));
 	}
 
+	@Override
+	public void cleanup() {
+		client.close();
+	}
 }

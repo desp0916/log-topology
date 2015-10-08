@@ -23,12 +23,12 @@ public class TestLogEntry extends StormTestCase{
 		String testData = UnitTestUtils.readFile("/resources/testData1.json");
 		JSONObject obj=(JSONObject) JSONValue.parse(testData);
 		LogEntry entry = new LogEntry(obj);
-		assertEquals("file://logServer/var/log/auth.log", entry.getSource());
+		assertEquals("1",entry.getVersion());
 		assertEquals(0,entry.getTags().size());
 		assertEquals(0,entry.getFields().size());
 		assertEquals(test, entry.getTimestamp());
-		assertEquals("logServer",entry.getSourceHost());
-		assertEquals("/var/log/auth.log",entry.getSourcePath());
+		assertEquals("hdp01.localdomain",entry.getHost());
+		assertEquals("/var/log/messages",entry.getPath());
 		assertNotNull(entry.getMessage());
 		assertEquals("syslog", entry.getType());
 	}
@@ -39,13 +39,12 @@ public class TestLogEntry extends StormTestCase{
 		JSONObject obj=(JSONObject) JSONValue.parse(testData);
 		LogEntry entry = new LogEntry(obj);
 		JSONObject test = entry.toJSON();
-		assertEquals(obj.get("@source"), test.get("@source"));
-		assertEquals(obj.get("@source_host"), test.get("@source_host"));
-		assertEquals(obj.get("@source_path"), test.get("@source_path"));
-		assertEquals(obj.get("@message"), test.get("@message"));
-		assertEquals(obj.get("@type"), test.get("@type"));
-		assertEquals(obj.get("@source"), test.get("@source"));
+		assertEquals(obj.get("message"), test.get("message"));
+		assertEquals(obj.get("@version"), test.get("@version"));
 		assertEquals(DateFormat.getDateInstance().format(entry.getTimestamp()), test.get("@timestamp"));
+		assertEquals(obj.get("host"), test.get("host"));
+		assertEquals(obj.get("path"), test.get("path"));
+		assertEquals(obj.get("type"), test.get("type"));
 	}
 
 	@Test

@@ -17,8 +17,7 @@ import backtype.storm.tuple.Values;
 
 public class VolumeCountingBolt extends BaseRichBolt {
 
-	private static final long serialVersionUID = -21345476599934L;
-
+	private static final long serialVersionUID = 3686011707239319575L;
 	public static Logger LOG = Logger.getLogger(VolumeCountingBolt.class);
 	private OutputCollector collector;
 
@@ -41,7 +40,7 @@ public class VolumeCountingBolt extends BaseRichBolt {
 
 	public void execute(Tuple input) {
 		LogEntry entry = (LogEntry) input.getValueByField(FieldNames.LOG_ENTRY);
-		collector.emit(new Values(getMinuteForTime(entry.getTimestamp()), entry.getSource(),1L));
+		collector.emit(new Values(getMinuteForTime(entry.getTimestamp()), entry.getPath(),1L));
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {

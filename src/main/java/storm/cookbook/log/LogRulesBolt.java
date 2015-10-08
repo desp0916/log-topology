@@ -24,8 +24,7 @@ import backtype.storm.tuple.Values;
 
 public class LogRulesBolt extends BaseRichBolt {
 
-	private static final long serialVersionUID = -21345433367834L;
-//	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7697431679727457564L;
 	public static Logger LOG = Logger.getLogger(LogRulesBolt.class);
 	private StatelessKnowledgeSession ksession;
 	private OutputCollector collector;
@@ -57,7 +56,14 @@ public class LogRulesBolt extends BaseRichBolt {
 			return;
 //			collector.fail(input);
 		}
-		ksession.execute( entry );
+//		try {
+		    LOG.error("GARYYYYY");
+			LOG.error(entry.getMessage());
+			ksession.execute( entry );
+//		} catch(ConsequenceException e) {
+//			LOG.error("GARYYYYY");
+//			LOG.error(e.getMessage());
+//		}
 		if(!entry.isFilter()){
 			LOG.debug("Emitting from Rules Bolt");
 			collector.emit(new Values(entry));

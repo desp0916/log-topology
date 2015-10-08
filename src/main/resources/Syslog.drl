@@ -7,9 +7,9 @@ import java.util.regex.Pattern
 
 rule "Host Correction"
     when
-        $l: LogEntry(sourceHost == "localhost")
+        $l: LogEntry(host == "localhost")
     then
-        $l.setSourceHost("localhost.example.com");
+        $l.setHost("localhost.example.com");
 
 end
 
@@ -21,7 +21,7 @@ rule "Filter By Type"
 end
 
 rule "Extract Fields"
-	salience 100 //run later
+	salience 100
 	when
 		$l: LogEntry(filter != true)
 	then

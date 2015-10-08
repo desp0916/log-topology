@@ -16,10 +16,10 @@ public class TestRulesBolt extends StormTestCase {
 	public void test() throws IOException {
         final OutputCollector collector = context.mock(OutputCollector.class);
         final LogEntry entry = getEntry();
-		entry.setSourceHost("localhost");
+		entry.setHost("localhost");
         final Tuple tuple = getTuple();
         final LogEntry testEntry = getEntry();
-        testEntry.setSourceHost("localhost.example.com");
+        testEntry.setHost("localhost.example.com");
         LogRulesBolt bolt = new LogRulesBolt();
         bolt.prepare(null, null, collector);
 
