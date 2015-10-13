@@ -14,15 +14,12 @@ import backtype.storm.topology.TopologyBuilder;
 //import backtype.storm.tuple.Fields;
 import backtype.storm.utils.Utils;
 
-import com.hmsonline.storm.cassandra.bolt.AckStrategy;
-import com.hmsonline.storm.cassandra.bolt.CassandraCounterBatchingBolt;
-
 public class LogTopology {
 
 	private TopologyBuilder builder = new TopologyBuilder();
 	private Config conf = new Config();
 	private LocalCluster cluster;
-	String configKey = "cassandra-config";
+	private final static String configKey = "cassandra-config";
 
 	public LogTopology() {
 
@@ -31,20 +28,20 @@ public class LogTopology {
 				"logSpout");
 		builder.setBolt("indexer", new IndexerBolt(), 10).shuffleGrouping(
 				"logRules");
-		builder.setBolt("counter", new VolumeCountingBolt(), 10)
-				.shuffleGrouping("logRules");
-		builder.setBolt("countPersistor", new CassandraBolt(), 10)
-				.shuffleGrouping("counter");
+//		builder.setBolt("counter", new VolumeCountingBolt(), 10)
+//				.shuffleGrouping("logRules");
+//		builder.setBolt("countPersistor", new CassandraBolt(), 10)
+//				.shuffleGrouping("counter");
 		// Create a CassandraBolt that writes to the "LogVolumeByMinute" column
 		// family and uses the Tuple field "RowKey" as the row key
-		CassandraCounterBatchingBolt<String, String, String> logPersistenceBolt =
-				new CassandraCounterBatchingBolt<String, String, String>(
-						Conf.LOGGING_KEYSPACE, configKey, Conf.COUNT_CF_NAME,
-						VolumeCountingBolt.FIELD_ROW_KEY,
-						VolumeCountingBolt.FIELD_INCREMENT);
-		logPersistenceBolt.setAckStrategy(AckStrategy.ACK_ON_RECEIVE);
-		builder.setBolt("countPersistor", logPersistenceBolt, 10)
-				.shuffleGrouping("counter");
+//		CassandraCounterBatchingBolt<String, String, String> logPersistenceBolt =
+//				new CassandraCounterBatchingBolt<String, String, String>(
+//						Conf.LOGGING_KEYSPACE, configKey, Conf.COUNT_CF_NAME,
+//						VolumeCountingBolt.FIELD_ROW_KEY,
+//						VolumeCountingBolt.FIELD_INCREMENT);
+//		logPersistenceBolt.setAckStrategy(AckStrategy.ACK_ON_RECEIVE);
+//		builder.setBolt("countPersistor", logPersistenceBolt, 10)
+//				.shuffleGrouping("counter");
 
 		// Maybe add:
 		// Stem and stop word counting per file

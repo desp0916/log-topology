@@ -28,12 +28,10 @@ public class LogSpout extends BaseRichSpout {
 
 
 	public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-//    	LOG.info("GARYXXXX: declareOutputFields()");
         outputFieldsDeclarer.declare(new Fields(FieldNames.LOG_ENTRY));
     }
 
 	public void open(Map conf, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
-//    	LOG.info("GARYXXXX: open()");
         host = conf.get(Conf.REDIS_HOST_KEY).toString();
         port = Integer.valueOf(conf.get(Conf.REDIS_PORT_KEY).toString());
         this.collector = spoutOutputCollector;
@@ -41,15 +39,13 @@ public class LogSpout extends BaseRichSpout {
     }
 
     private void connectToRedis() {
-//    	LOG.info("garyyyy:" + host + ":" + port );
-//    	LOG.info("GARYXXXX: connectToRedis()");
         jedis = new Jedis(host, port);
     }
 
 	public void nextTuple() {
         String content = jedis.rpop(LOG_CHANNEL);
         if(content==null || "nil".equals(content)) {
-//            try { Thread.sleep(300); } catch (InterruptedException e) {}
+//          try { Thread.sleep(300); } catch (InterruptedException e) {}
         	try {
         		Thread.sleep(300);
         	} catch (InterruptedException e) {
@@ -60,9 +56,7 @@ public class LogSpout extends BaseRichSpout {
         } else {
             JSONObject obj=(JSONObject) JSONValue.parse(content);
             LogEntry entry = new LogEntry(obj);
-            LOG.error("GARYHERE");
             LOG.error(entry.getMessage());
-//        	LOG.info("GARYZZZZ: nextTuple()" + entry.toString());
             collector.emit(new Values(entry));
 
         }

@@ -38,6 +38,7 @@ public class CassandraBolt implements IRichBolt {
 			LOG.fatal( "Received null or incorrect value from tuple" );
 			return;
 		}
+		String statement = "";
 		session.execute(statement);
 	}
 

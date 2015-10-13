@@ -40,10 +40,8 @@ public class LogRulesBolt extends BaseRichBolt {
 				ResourceType.DRL);
 
 		if ( kbuilder.hasErrors() ) {
-//			LOG.error("GARYHERE");
 		    LOG.error( kbuilder.getErrors().toString() );
 		}
-//		LOG.error("GARYTHERE");
 		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
 		kbase.addKnowledgePackages( kbuilder.getKnowledgePackages() );
 		ksession = kbase.newStatelessKnowledgeSession();
@@ -57,7 +55,6 @@ public class LogRulesBolt extends BaseRichBolt {
 //			collector.fail(input);
 		}
 //		try {
-		    LOG.error("GARYYYYY");
 			LOG.error(entry.getMessage());
 			ksession.execute( entry );
 //		} catch(ConsequenceException e) {
