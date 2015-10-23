@@ -2,13 +2,12 @@ package storm.cookbook.log;
 
 import java.util.HashMap;
 
-import org.apache.cassandra.thrift.AuthorizationException;
-
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
+//import org.apache.cassandra.thrift.AuthorizationException;
 import backtype.storm.StormSubmitter;
 import backtype.storm.generated.AlreadyAliveException;
-//import backtype.storm.generated.AuthorizationException;
+import backtype.storm.generated.AuthorizationException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
 //import backtype.storm.tuple.Fields;

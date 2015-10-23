@@ -12,16 +12,20 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<storm.version>0.9.1.2.1.1.0-385</storm.version>
-		<hadoop.version>2.4.0.2.1.1.0-385</hadoop.version>
+		<storm.version>0.10.0.2.3.2.0-2950</storm.version>
+		<hadoop.version>2.7.1.2.3.2.0-2950</hadoop.version>
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
 
 	<repositories>
 		<repository>
 			<id>hortonworks</id>
-			<url>http://repo.hortonworks.com/content/repositories/releases/</url>
+			<url>http://nexus-private.hortonworks.com/nexus/content/groups/public/</url>
 		</repository>
+		<!--repository>
+			<id>hortonworks</id>
+			<url>http://repo.hortonworks.com/content/repositories/releases/</url>
+		</repository -->
 		<repository>
 			<id>github-releases</id>
 			<url>http://oss.sonatype.org/content/repositories/github-releases/</url>
@@ -197,6 +201,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>

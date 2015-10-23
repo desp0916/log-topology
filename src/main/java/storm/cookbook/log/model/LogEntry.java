@@ -1,7 +1,6 @@
 package storm.cookbook.log.model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,58 +25,60 @@ public class LogEntry implements Serializable {
 	private String path = "";
 	private String type = "";
 	private List<String> tags = new ArrayList<String>();
-	private Map<String,String> fields = new HashMap<String, String>();
+	private Map<String, String> fields = new HashMap<String, String>();
 	private boolean filter = false;
 
 	private NotificationDetails notifyAbout = null;
 
-	private static String[] FORMATS = new String[]{
-		"yyyy-MM-dd'T'HH:mm:ss.SSS",
-		"yyyy.MM.dd G 'at' HH:mm:ss z",
-		"yyyyy.MMMMM.dd GGG hh:mm aaa",
-		"EEE, d MMM yyyy HH:mm:ss Z",
-		"yyMMddHHmmssZ"};
+	private static String[] FORMATS = new String[] {
+			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy.MM.dd G 'at' HH:mm:ss z",
+			"yyyyy.MMMMM.dd GGG hh:mm aaa", "EEE, d MMM yyyy HH:mm:ss Z",
+			"yyMMddHHmmssZ" };
 
 	@SuppressWarnings("unchecked")
-	public LogEntry(JSONObject json){
-		message = (String)json.get("message");
-		version = (String)json.get("@version");
-		timestamp = parseDate((String)json.get("@timestamp"));
-		host = (String)json.get("host");
-		path = (String)json.get("path");
-		type = (String)json.get("type");
-//		JSONArray array = (JSONArray)json.get("@tags");
+	public LogEntry(JSONObject json) {
+		message = (String) json.get("message");
+		version = (String) json.get("@version");
+		timestamp = parseDate((String) json.get("@timestamp"));
+		host = (String) json.get("host");
+		path = (String) json.get("path");
+		type = (String) json.get("type");
+		// JSONArray array = (JSONArray)json.get("@tags");
 		String t = "[]";
 		Object obj = JSONValue.parse(t);
-		JSONArray array = (JSONArray)obj;
+		JSONArray array = (JSONArray) obj;
 		tags.addAll(array);
-//		JSONObject fields = (JSONObject)json.get("@fields");
+		// JSONObject fields = (JSONObject)json.get("@fields");
 		String o = "{}";
 		Object obj_o = JSONValue.parse(o);
-		JSONObject fields = (JSONObject)obj_o;
+		JSONObject fields = (JSONObject) obj_o;
 		fields.putAll(fields);
 	}
 
-	public Date parseDate(String value){
-		for(int i = 0; i < FORMATS.length; i++){
+	public Date parseDate(String value) {
+		for (int i = 0; i < FORMATS.length; i++) {
 			SimpleDateFormat format = new SimpleDateFormat(FORMATS[i]);
 			Date temp;
 			try {
 				temp = format.parse(value);
-				if(temp != null)
+				if (temp != null)
 					return temp;
-			} catch (ParseException e) {}
+			} catch (ParseException e) {
+			}
 		}
 		LOG.error("Could not parse timestamp for log");
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONObject toJSON(){
+	public JSONObject toJSON() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		String dateString = format.format(timestamp);
 		JSONObject json = new JSONObject();
 		json.put("message", message);
 		json.put("@version", version);
-		json.put("@timestamp", DateFormat.getDateInstance().format(timestamp));
+//		json.put("@timestamp", DateFormat.getDateInstance().format(timestamp));
+		json.put("@timestamp", dateString);
 		json.put("host", host);
 		json.put("path", path);
 		json.put("type", type);
@@ -86,10 +87,9 @@ public class LogEntry implements Serializable {
 		json.put("@tags", temp);
 		JSONObject fieldTemp = new JSONObject();
 		fieldTemp.putAll(fields);
-		json.put("@fields",fieldTemp);
+		json.put("@fields", fieldTemp);
 		return json;
 	}
-
 
 	public boolean isFilter() {
 		return filter;
@@ -119,11 +119,11 @@ public class LogEntry implements Serializable {
 		return fields;
 	}
 
-	public void addField(String name, String value){
+	public void addField(String name, String value) {
 		fields.put(name, value);
 	}
 
-	public void addTag(String tag){
+	public void addTag(String tag) {
 		tags.add(tag);
 	}
 
@@ -176,10 +176,8 @@ public class LogEntry implements Serializable {
 		result = prime * result + (filter ? 1231 : 1237);
 		result = prime * result + ((message == null) ? 0 : message.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		result = prime * result
-				+ ((host == null) ? 0 : host.hashCode());
-		result = prime * result
-				+ ((path == null) ? 0 : path.hashCode());
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result
 				+ ((timestamp == null) ? 0 : timestamp.hashCode());
