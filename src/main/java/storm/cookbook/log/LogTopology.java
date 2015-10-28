@@ -27,8 +27,8 @@ public class LogTopology {
 				"logSpout");
 		builder.setBolt("indexer", new IndexerBolt(), 10).shuffleGrouping(
 				"logRules");
-//		builder.setBolt("counter", new VolumeCountingBolt(), 10)
-//				.shuffleGrouping("logRules");
+		builder.setBolt("counter", new VolumeCountingBolt(), 10)
+				.shuffleGrouping("logRules");
 //		builder.setBolt("countPersistor", new CassandraBolt(), 10)
 //				.shuffleGrouping("counter");
 		// Create a CassandraBolt that writes to the "LogVolumeByMinute" column
@@ -85,7 +85,7 @@ public class LogTopology {
 			throws AlreadyAliveException, InvalidTopologyException,
 			AuthorizationException {
 		// conf.setDebug(true);
-		conf.setNumWorkers(20);
+		conf.setNumWorkers(5);
 		conf.put(Conf.REDIS_HOST_KEY, redisHost);
 
 		HashMap<String, Object> clientConfig = new HashMap<String, Object>();
